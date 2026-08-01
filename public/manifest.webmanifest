@@ -1,0 +1,19 @@
+{
+  "name": "拾光 · 个人工作台",
+  "short_name": "拾光",
+  "description": "以日记为核心的个人生活工作台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F1E9",
+  "theme_color": "#F5F1E9",
+  "orientation": "portrait-primary",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

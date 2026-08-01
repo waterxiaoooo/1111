@@ -1,0 +1,19 @@
+{
+  "appId": "com.shiguang.workbench",
+  "appName": "拾光",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#EEF2F7"
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#EEF2F7",
+      "overlaysWebView": false
+    }
+  }
+}
