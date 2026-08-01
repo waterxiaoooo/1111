@@ -119,6 +119,10 @@ function money(value) {
   return new Intl.NumberFormat("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
 }
 
+function isValidDeepSeekKey(key) {
+  return typeof key === "string" && key.trim().startsWith("sk-") && key.trim().length >= 10;
+}
+
 function calculateStreak(entries) {
   const recordedDays = new Set(entries.map((entry) => dateKey(new Date(entry.date))));
   let cursor = new Date();
@@ -957,8 +961,9 @@ function LedgerAssistant({ transactions, onClose, onSave, setToast }) {
   const sendMessage = async (event) => {
     event.preventDefault();
     const text = input.trim();
-    if (!apiKey.trim()) {
+    if (!isValidDeepSeekKey(apiKey)) {
       setShowKey(true);
+      setToast("API Key 格式不对，应以 sk- 开头");
       return;
     }
     if (!text || loading) return;
@@ -1019,11 +1024,14 @@ function LedgerAssistant({ transactions, onClose, onSave, setToast }) {
 
         {showKey && (
           <div className="panel api-key-card ledger-api-key">
-            <div><KeyRound size={20} /><p><strong>DeepSeek API Key</strong><small>只保存在这台设备，不会写入安装包。</small></p></div>
+            <div><KeyRound size={20} /><p><strong>DeepSeek API Key</strong><small>只保存在这台设备，不会写入安装包。格式应以 sk- 开头。</small></p></div>
             <label>
               <input type="password" value={apiKey} onChange={(event) => setApiKey(event.target.value)} placeholder="sk-..." autoComplete="off" />
               <button type="button" onClick={() => setShowKey(false)}>完成</button>
             </label>
+            {apiKey && !isValidDeepSeekKey(apiKey) && (
+              <small className="input-error">当前 Key 格式不对（不是 sk- 开头），请检查是否粘贴了文件名或链接。</small>
+            )}
           </div>
         )}
 
@@ -1312,7 +1320,11 @@ function EnglishBuddyView({ setToast }) {
   const sendMessage = async (event) => {
     event.preventDefault();
     const text = input.trim();
-    if (!apiKey.trim()) return setShowKey(true);
+    if (!isValidDeepSeekKey(apiKey)) {
+      setShowKey(true);
+      setToast("API Key 格式不对，应以 sk- 开头");
+      return;
+    }
     if (!text || loading) return;
     const userMessage = { id: crypto.randomUUID(), role: "user", text };
     const history = [...messages, userMessage];
@@ -1345,7 +1357,11 @@ function EnglishBuddyView({ setToast }) {
   };
 
   const translate = async () => {
-    if (!apiKey.trim()) return setShowKey(true);
+    if (!isValidDeepSeekKey(apiKey)) {
+      setShowKey(true);
+      setToast("API Key 格式不对，应以 sk- 开头");
+      return;
+    }
     if (!translationInput.trim() || loading) return;
     setLoading(true);
     try {
@@ -1368,8 +1384,11 @@ function EnglishBuddyView({ setToast }) {
 
       {showKey && (
         <section className="panel api-key-card">
-          <div><KeyRound size={20} /><p><strong>DeepSeek API Key</strong><small>只保存在这台设备，不会写入安装包。</small></p></div>
+          <div><KeyRound size={20} /><p><strong>DeepSeek API Key</strong><small>只保存在这台设备，不会写入安装包。格式应以 sk- 开头。</small></p></div>
           <label><input type="password" value={apiKey} onChange={(event) => setApiKey(event.target.value)} placeholder="sk-..." autoComplete="off" /><button type="button" onClick={() => setShowKey(false)}>完成</button></label>
+          {apiKey && !isValidDeepSeekKey(apiKey) && (
+            <small className="input-error">当前 Key 格式不对（不是 sk- 开头），请检查是否粘贴了文件名或链接。</small>
+          )}
         </section>
       )}
 

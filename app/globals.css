@@ -3438,6 +3438,12 @@ textarea:focus-visible {
   cursor: pointer;
 }
 
+.api-key-card .input-error {
+  color: #e14337;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
 .english-mode-switch {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -270,6 +270,9 @@ public class WorkbenchNativePlugin extends Plugin {
                 : connection.getErrorStream();
             String raw = readAll(stream);
             if (code < 200 || code >= 300) {
+                if (code == 401) {
+                    throw new Exception("DeepSeek API Key 无效，请检查或重新填写");
+                }
                 String message = raw;
                 try {
                     message = new JSONObject(raw).optJSONObject("error").optString("message", raw);
